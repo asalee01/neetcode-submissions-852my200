@@ -1,25 +1,27 @@
 class Solution:
     def longestPalindrome(self, s: str) -> str:
-        res = ''
+        resLen = 0
+        res = 0
         for i in range(len(s)):
-            oVal = self.findPal( s, i, i)
-            eVal = self.findPal(s, i, i+1)
-            if len(oVal) > len(res):
-                 res = oVal
-            if len(eVal) > len(res):
-                res = eVal
-        return res
+            #odd length
+            res, resLen = self.recurse(s, i, i, resLen, res)
+
+            #even
+            res, resLen = self.recurse(s, i, i+1, resLen, res)
         
+        return res
 
-    def findPal(self, s, l, r):
-        val = ''
-        n = 0
-        while(l >= 0 and r < len(s) and s[l] == s[r]):
-            if(r - l + 1 > n):
-                val = s[l:r+1]
-                n = r - l + 1
-            l -= 1
-            r += 1
-        return val
-    
+        return self.recurse(s, 0, len(s)-1)
 
+    def recurse(self, s, i, j, resLen, res):
+        while (i >= 0 and  j < len(s)) and s[i] == s[j]:
+            if (j-i+1) > resLen:
+                resLen = j-i+1
+                res = s[i:j+1]
+            i -= 1
+            j += 1
+        
+        return res, resLen
+
+        
+        
